@@ -1,13 +1,8 @@
-const reportWebVitals = onPerfEntry => {
-  if (onPerfEntry && onPerfEntry instanceof Function) {
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(onPerfEntry);
-      getFID(onPerfEntry);
-      getFCP(onPerfEntry);
-      getLCP(onPerfEntry);
-      getTTFB(onPerfEntry);
-    });
-  }
+// src/reportWebVitals.js
+
+const reportWebVitals = () => {
+  // No-op – performance tracking disabled
+  // This function intentionally left empty to remove dependency on 'web-vitals'
 };
 
 export default reportWebVitals;
