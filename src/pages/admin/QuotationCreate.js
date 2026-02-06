@@ -15,10 +15,10 @@ const QuotationCreate = () => {
     projectTitle: '',
     projectDescription: '',
     items: [{ serviceName: '', unitPrice: 0, quantity: 1, totalPrice: 0 }],
-    subtotal: 0,
+    subtotal: '',                 // now manual (string → allows empty input)
     vatRate: 20,
-    vatAmount: 0,
-    totalAmount: 0,
+    vatAmount: '',                // manual
+    totalAmount: '',              // manual
     validUntil: '',
   });
 
@@ -39,22 +39,11 @@ const QuotationCreate = () => {
     const newItems = [...formData.items];
     newItems[index][field] = field === 'unitPrice' ? Number(value) || 0 : value;
 
-    // Auto-calculate totalPrice for this item
+    // Auto-calculate totalPrice per item (still useful)
     newItems[index].totalPrice = (newItems[index].quantity || 1) * (newItems[index].unitPrice || 0);
 
     setFormData((prev) => ({ ...prev, items: newItems }));
-
-    // Recalculate overall totals
-    const subtotal = newItems.reduce((sum, item) => sum + (item.totalPrice || 0), 0);
-    const vatAmount = subtotal * (formData.vatRate / 100);
-    const totalAmount = subtotal + vatAmount;
-
-    setFormData((prev) => ({
-      ...prev,
-      subtotal,
-      vatAmount,
-      totalAmount,
-    }));
+    // Note: No automatic update to overall subtotal/vat/total — admin controls them manually
   };
 
   const addItem = () => {
@@ -77,6 +66,10 @@ const QuotationCreate = () => {
       setError('Please add at least one valid item with name and unit price > 0');
       return;
     }
+    if (!formData.subtotal || !formData.vatAmount || !formData.totalAmount) {
+      setError('Please enter Subtotal, VAT Amount, and Total Amount');
+      return;
+    }
 
     setLoading(true);
 
@@ -84,7 +77,7 @@ const QuotationCreate = () => {
       const token = localStorage.getItem('adminToken');
       if (!token) throw new Error('No token found');
 
-      // Prepare clean payload matching backend schema
+      // Prepare payload – send manual totals as numbers
       const payload = {
         ...formData,
         items: formData.items.map(item => ({
@@ -96,6 +89,7 @@ const QuotationCreate = () => {
         subtotal: Number(formData.subtotal),
         vatAmount: Number(formData.vatAmount),
         totalAmount: Number(formData.totalAmount),
+        vatRate: Number(formData.vatRate),
       };
 
       await axios.post('http://localhost:5000/api/quotations', payload, {
@@ -242,30 +236,45 @@ const QuotationCreate = () => {
             ))}
           </div>
 
-          {/* Auto-calculated totals – read-only */}
+          {/* Manual totals – now editable */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 p-6 rounded-xl">
             <div>
-              <label className="block text-gray-700 mb-1">Subtotal</label>
+              <label className="block text-gray-700 mb-1 font-medium">Subtotal (£) *</label>
               <input
-                value={formData.subtotal.toFixed(2)}
-                readOnly
-                className="w-full p-3 border rounded-lg bg-gray-100 text-gray-800 font-medium"
+                type="number"
+                name="subtotal"
+                value={formData.subtotal}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                min="0"
+                step="0.01"
+                required
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-1">VAT ({formData.vatRate}%)</label>
+              <label className="block text-gray-700 mb-1 font-medium">VAT Amount (£) *</label>
               <input
-                value={formData.vatAmount.toFixed(2)}
-                readOnly
-                className="w-full p-3 border rounded-lg bg-gray-100 text-gray-800 font-medium"
+                type="number"
+                name="vatAmount"
+                value={formData.vatAmount}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                min="0"
+                step="0.01"
+                required
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-1 font-bold">Total</label>
+              <label className="block text-gray-700 mb-1 font-bold">Total Amount (£) *</label>
               <input
-                value={formData.totalAmount.toFixed(2)}
-                readOnly
-                className="w-full p-3 border rounded-lg bg-gray-100 text-blue-700 font-bold text-xl"
+                type="number"
+                name="totalAmount"
+                value={formData.totalAmount}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 font-bold text-xl"
+                min="0"
+                step="0.01"
+                required
               />
             </div>
           </div>
@@ -281,11 +290,10 @@ const QuotationCreate = () => {
             </button>
             <button
               type="submit"
-              disabled={loading || formData.jobType.length === 0}
+              
+              disabled={loading}
               className={`px-10 py-3 rounded-lg text-white font-medium transition ${
-                loading || formData.jobType.length === 0
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'
+                loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
               {loading ? 'Creating...' : 'Create Quotation'}
