@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
 import HeroSection from '../../components/public/HeroSection';
 import CompanyIntro from '../../components/public/CompanyIntro';
 import TestimonialsSection from '../../components/public/TestimonialsSection';
@@ -11,6 +10,14 @@ import QuotationSummary from '../../components/public/QuotationSummary';
 import PaymentTerms from '../../components/public/PaymentTerms';
 import CallToAction from '../../components/public/CallToAction';
 import FooterPublic from '../../components/public/FooterPublic';
+import SidebarMenu from '../../components/public/SidebarMenue';
+import AcceptanceModal from '../../components/public/AcceptanceModal';
+import QuotationScopeTable from '../../components/public/QuotationScopeTable';
+import TenderInclusionSummary from '../../components/public/TenderInclusionSummary';
+import AirSourceHeatPumps from '../../components/public/AirSourceHeatPumps';
+import NonContestableCharges from '../../components/public/NonContestableCharges';
+import DeliveryStandards from '../../components/public/DeliveryStandards';
+import ConstructionAssumptions from '../../components/public/ConstructionAssumptions';
 
 const ProposalPage = () => {
   const { proposalId } = useParams();
@@ -18,6 +25,8 @@ const ProposalPage = () => {
   const [quotation, setQuotation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchQuotation = async () => {
@@ -25,14 +34,13 @@ const ProposalPage = () => {
         const response = await axios.get(`http://localhost:5000/proposal/${proposalId}`);
 
         if (!response.data.success) {
-          throw new Error(response.data.message || 'Failed to load quotation');
+          throw new Error(response.data.message || 'Quotation not found');
         }
 
         setQuotation(response.data.data);
         setLoading(false);
       } catch (err) {
-        console.error('Fetch error:', err);
-        setError(err.response?.data?.message || err.message || 'Failed to load quotation. The link may be invalid or expired.');
+        setError(err.response?.data?.message || 'Failed to load quotation. The link may be invalid or expired.');
         setLoading(false);
       }
     };
@@ -69,7 +77,18 @@ const ProposalPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="relative min-h-screen bg-gray-50">
+      {/* Hamburger button for sidebar (mobile) */}
+      <button
+        onClick={() => setSidebarOpen(true)}
+        className="fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg md:hidden"
+      >
+        ☰
+      </button>
+
+      {/* Sidebar */}
+      <SidebarMenu isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
       <main className="flex-grow">
         <HeroSection />
         <CompanyIntro />
@@ -79,10 +98,27 @@ const ProposalPage = () => {
           siteAddress={quotation.siteAddress}
         />
         <QuotationSummary quotation={quotation} />
+
+        {/* Long sections – only show if data exists */}
+        {quotation.scopeTable && <QuotationScopeTable data={quotation.scopeTable} />}
+        {quotation.tenderInclusions && <TenderInclusionSummary data={quotation.tenderInclusions} jobTypes={quotation.jobType} />}
+        {quotation.airSourceHeatPumps && <AirSourceHeatPumps data={quotation.airSourceHeatPumps} />}
+        {quotation.nonContestableCharges && <NonContestableCharges data={quotation.nonContestableCharges} />}
+        {quotation.deliveryStandards && <DeliveryStandards data={quotation.deliveryStandards} />}
+        {quotation.constructionAssumptions && <ConstructionAssumptions data={quotation.constructionAssumptions} />}
+
         <PaymentTerms />
-        <CallToAction />
+        <CallToAction onAccept={() => setShowModal(true)} />
       </main>
+
       <FooterPublic />
+
+      {/* Acceptance Modal */}
+      <AcceptanceModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        quotation={quotation}
+      />
     </div>
   );
 };

@@ -2,30 +2,32 @@
 import React from 'react';
 
 const CustomerGreeting = ({ customerName, siteAddress }) => {
-  // Fallbacks in case data is missing
   const name = customerName || 'Valued Customer';
-  const address = siteAddress || 'your specified location';
+  const address = siteAddress || 'your project location';
 
   return (
-    <section className="py-12 md:py-16 bg-white">
+    <section className="py-16 md:py-20 bg-white">
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
-        <div className="bg-blue-50/50 rounded-2xl p-8 md:p-12 border border-blue-100 shadow-sm">
-          {/* Greeting line */}
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+        <div className="bg-white border border-gray-100 rounded-3xl p-10 md:p-16 shadow-sm">
+          <h3 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-8">
             Dear {name},
           </h3>
 
-          {/* First paragraph */}
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-            Thank you for choosing Air Utilities to support your project at {address}. 
-            We truly appreciate the trust you have placed in us and are excited to deliver reliable, high-quality utility solutions tailored exactly to your needs.
+          <p className="text-xl md:text-2xl leading-relaxed text-gray-700 mb-8">
+            Thank you for choosing Air Utilities to support your project at <span className="font-medium text-gray-900">{address}</span>.
           </p>
 
-          {/* Second paragraph */}
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
-            Below you will find a clear and transparent summary of the quotation we discussed. 
-            Everything is itemized, priced and explained so you can make an informed decision with confidence. 
-            If anything needs clarification or adjustment — we're here to help.
+          <p className="text-xl md:text-2xl leading-relaxed text-gray-700 mb-8">
+            We truly appreciate the trust you have placed in us. Our team is committed to delivering reliable, high-quality utility solutions with complete transparency and professionalism.
+          </p>
+
+          <p className="text-xl md:text-2xl leading-relaxed text-gray-700">
+            Below is your detailed quotation summary. Every item is clearly listed with pricing and explanations so you can make a confident decision. 
+            Should you have any questions or require adjustments, please do not hesitate to contact us.
+          </p>
+
+          <p className="mt-10 text-lg text-gray-600 italic">
+            We look forward to working with you.
           </p>
         </div>
       </div>

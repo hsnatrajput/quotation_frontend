@@ -14,6 +14,7 @@ const QuotationSummary = ({ quotation }) => {
     validUntil = "N/A",
     items = [],
   } = quotation || {};
+  
 
   return (
     <section className="py-16 md:py-24 bg-gray-50">
