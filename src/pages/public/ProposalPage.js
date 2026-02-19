@@ -7,7 +7,6 @@ import CompanyIntro from '../../components/public/CompanyIntro';
 import TestimonialsSection from '../../components/public/TestimonialsSection';
 import CustomerGreeting from '../../components/public/CustomerGreeting';
 import QuotationSummary from '../../components/public/QuotationSummary';
-import PaymentTerms from '../../components/public/PaymentTerms';
 import CallToAction from '../../components/public/CallToAction';
 import FooterPublic from '../../components/public/FooterPublic';
 import SidebarMenu from '../../components/public/SidebarMenue';
@@ -17,7 +16,10 @@ import TenderInclusionSummary from '../../components/public/TenderInclusionSumma
 import AirSourceHeatPumps from '../../components/public/AirSourceHeatPumps';
 import NonContestableCharges from '../../components/public/NonContestableCharges';
 import DeliveryStandards from '../../components/public/DeliveryStandards';
-import ConstructionAssumptions from '../../components/public/ConstructionAssumptions';
+import PocDocumentationPublic from '../../components/public/PocDocumentationPublic';
+import StaticConstructionAssumptions from '../../components/public/StaticConstructionAssumptions';
+import StaticResponsibilities from '../../components/public/StaticResponsibilities';
+import StaticPaymentTerms from '../../components/public/StaticPaymentTerms';
 
 const ProposalPage = () => {
   const { proposalId } = useParams();
@@ -48,27 +50,15 @@ const ProposalPage = () => {
     fetchQuotation();
   }, [proposalId]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600">Loading your quotation...</p>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   if (error || !quotation) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-lg px-6">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Quotation Not Found</h1>
-          <p className="text-xl text-gray-600 mb-8">{error || "The link may be invalid or expired. Please contact us for assistance."}</p>
-          <a
-            href="mailto:info@airutilities.co.uk"
-            className="inline-block bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-medium hover:bg-blue-700 transition"
-          >
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        <div className="text-center max-w-lg">
+          <h1 className="text-4xl font-bold text-red-600 mb-4">Quotation Not Found</h1>
+          <p className="text-xl text-gray-700 mb-8">{error}</p>
+          <a href="mailto:info@airutilities.co.uk" className="inline-block bg-blue-600 text-white px-8 py-4 rounded-xl">
             Contact Support
           </a>
         </div>
@@ -78,7 +68,6 @@ const ProposalPage = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-50">
-      {/* Hamburger button for sidebar (mobile) */}
       <button
         onClick={() => setSidebarOpen(true)}
         className="fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg md:hidden"
@@ -86,34 +75,58 @@ const ProposalPage = () => {
         ☰
       </button>
 
-      {/* Sidebar */}
       <SidebarMenu isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <main className="flex-grow">
         <HeroSection />
         <CompanyIntro />
         <TestimonialsSection />
+
         <CustomerGreeting 
           customerName={quotation.customerName}
           siteAddress={quotation.siteAddress}
         />
+
         <QuotationSummary quotation={quotation} />
 
-        {/* Long sections – only show if data exists */}
-        {quotation.scopeTable && <QuotationScopeTable data={quotation.scopeTable} />}
-        {quotation.tenderInclusions && <TenderInclusionSummary data={quotation.tenderInclusions} jobTypes={quotation.jobType} />}
-        {quotation.airSourceHeatPumps && <AirSourceHeatPumps data={quotation.airSourceHeatPumps} />}
-        {quotation.nonContestableCharges && <NonContestableCharges data={quotation.nonContestableCharges} />}
-        {quotation.deliveryStandards && <DeliveryStandards data={quotation.deliveryStandards} />}
-        {quotation.constructionAssumptions && <ConstructionAssumptions data={quotation.constructionAssumptions} />}
+        {/* Dynamic sections – show if data exists and is not empty */}
+        {quotation.scopeTable && Object.values(quotation.scopeTable).some(v => v) && (
+          <QuotationScopeTable data={quotation.scopeTable} />
+        )}
 
-        <PaymentTerms />
+        {quotation.tenderInclusions && Object.keys(quotation.tenderInclusions).length > 0 && (
+          <TenderInclusionSummary 
+            data={quotation.tenderInclusions} 
+            jobTypes={quotation.jobType || []} 
+          />
+        )}
+
+        {quotation.airSourceHeatPumps && quotation.airSourceHeatPumps.numPlots && (
+          <AirSourceHeatPumps data={quotation.airSourceHeatPumps} />
+        )}
+
+        {quotation.nonContestableCharges && Object.values(quotation.nonContestableCharges).some(v => v) && (
+          <NonContestableCharges data={quotation.nonContestableCharges} />
+        )}
+
+        {quotation.deliveryStandards && Object.values(quotation.deliveryStandards).some(v => v) && (
+          <DeliveryStandards data={quotation.deliveryStandards} />
+        )}
+
+        {quotation.pocDocumentation && Object.values(quotation.pocDocumentation).some(v => v) && (
+          <PocDocumentationPublic data={quotation.pocDocumentation} />
+        )}
+
+        {/* Always show static sections */}
+        <StaticConstructionAssumptions />
+        <StaticResponsibilities />
+        <StaticPaymentTerms />
+
         <CallToAction onAccept={() => setShowModal(true)} />
       </main>
 
       <FooterPublic />
 
-      {/* Acceptance Modal */}
       <AcceptanceModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
