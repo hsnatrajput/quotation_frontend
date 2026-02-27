@@ -7,7 +7,7 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 transition-transform duration-[18s] hover:scale-110"
         style={{
-          backgroundImage: "url('/assets/background2.png')",
+          backgroundImage: "url('/assets/background-hero.png')",
         }}
       />
 
