@@ -158,11 +158,9 @@ const TestimonialsSection = () => {
                   </div>
 
                   {/* Text content */}
-                  <div className="p-6 md:p-8 flex flex-col flex-grow">
-                    <p className="text-gray-700 text-lg md:text-xl leading-relaxed mb-6 flex-grow">
-                      “{testimonial.text}”
-                    </p>
-
+                  <div className="bg-white/95 backdrop-blur-xl border border-slate-100 rounded-3xl p-8 shadow-2xl hover:shadow-3xl hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
+                    <div className="text-6xl text-cyan-200/60 mb-6">“</div>
+                    <p className="text-slate-700 text-lg leading-relaxed flex-grow">“{testimonial.text}”</p>
                     <div>
                       <p className="font-semibold text-gray-900 text-lg">
                         {testimonial.name}

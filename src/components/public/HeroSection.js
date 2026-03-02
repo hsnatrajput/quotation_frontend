@@ -1,50 +1,63 @@
+// src/components/public/HeroSection.js
 import React from 'react';
+
+const WaveDivider = () => (
+  <svg 
+    className="w-full h-28 md:h-36 -mb-1" 
+    viewBox="0 0 1440 120" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg" 
+    preserveAspectRatio="none"
+  >
+    <path 
+      d="M0 120L60 100C120 80 240 45 360 50C480 55 600 95 720 90C840 85 960 50 1080 40C1200 30 1320 55 1380 65L1440 80V120H0Z" 
+      fill="#f8fafc" 
+    />
+    <path 
+      d="M0 120L48 105C96 90 192 60 288 55C384 50 480 80 576 85C672 90 768 60 864 45C960 30 1056 40 1152 50C1248 60 1344 80 1392 85L1440 90V120H0Z" 
+      fill="#67E8F9" 
+      fillOpacity="0.22" 
+    />
+  </svg>
+);
 
 const HeroSection = () => {
   return (
-    <section className="relative h-[85vh] min-h-[680px] w-full overflow-hidden">
-      {/* Background image */}
+    <section className="relative h-[92vh] min-h-[720px] w-full overflow-hidden bg-white">
+      {/* Background image with soft light cinematic zoom */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 transition-transform duration-[18s] hover:scale-110"
-        style={{
-          backgroundImage: "url('/assets/background-hero.png')",
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 transition-transform duration-[28s] ease-out"
+        style={{ backgroundImage: "url('/assets/background-hero.png')" }}
       />
 
-      {/* Stronger overlay – more premium cinematic feel */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/60 to-black/75"></div>
+      {/* Very soft light overlay – premium airy feel */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/75 via-cyan-50/60 to-white/80" />
 
-      {/* Main content – very centered, breathing layout */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 sm:px-12 lg:px-24">
-        {/* Top subtle pre-headline */}
-        <p className="text-lg sm:text-xl md:text-2xl text-blue-200 font-medium tracking-widest uppercase mb-4 md:mb-6 opacity-90 animate-fade-in-up">
-          Electric • Gas • Water 
-        </p>
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 lg:px-12">
+        <div className="max-w-5xl">
+          <div className="inline-flex items-center gap-3 px-8 py-3 bg-white/90 backdrop-blur-xl border border-cyan-100 rounded-full text-cyan-700 text-sm font-medium tracking-[4px] uppercase mb-8 shadow-sm">
+            ⚡ AIR UTILITIES • PREMIUM UTILITY SOLUTIONS
+          </div>
 
-        {/* Hero headline – huge, confident, slightly premium */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white leading-none tracking-tight drop-shadow-3xl animate-fade-in-up animation-delay-200">
-          Utilities <span className="text-blue-300">Done Right</span>
-        </h1>
+          <h1 className="text-6xl md:text-7xl lg:text-[5.8rem] xl:text-[6.5rem] font-black text-slate-900 leading-none tracking-[-0.04em]">
+            Utilities <span className="bg-gradient-to-r from-cyan-500 to-indigo-600 bg-clip-text text-transparent">Done Right</span>
+          </h1>
 
-        {/* Strong subheadline – warm, confident, tiny clever touch */}
-        <p className="mt-8 md:mt-10 text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-100 font-light max-w-5xl mx-auto leading-tight drop-shadow-2xl animate-fade-in-up animation-delay-400">
-          We connect homes and businesses to the essentials —<br className="hidden sm:block" />
-          <span className="font-medium text-white">
-            reliably, transparently, and without the usual headaches.
-          </span>
-        </p>
-
-        {/* Very small underline sentence – human touch */}
-        <p className="mt-10 text-lg md:text-xl text-gray-200 max-w-4xl mx-auto opacity-90 font-light italic">
-          Because boring bills shouldn’t come with boring service.
-        </p>
+          <p className="mt-8 text-2xl md:text-3xl text-slate-700 font-light max-w-3xl mx-auto leading-tight">
+            Premium connections. Crystal-clear pricing.<br className="hidden sm:block" /> Zero headaches.
+          </p>
+        </div>
       </div>
 
-      {/* Gentle scroll prompt */}
-      <div className="absolute bottom-14 left-1/2 -translate-x-1/2 text-white/70 animate-bounce-slow">
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-        </svg>
+      {/* Elegant light wave divider */}
+      <div className="absolute bottom-0 left-0 w-full">
+        <WaveDivider />
+      </div>
+
+      {/* Scroll prompt – light theme */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-slate-500 animate-bounce">
+        <span className="text-xs tracking-[3px] font-medium">SCROLL FOR YOUR PROPOSAL</span>
+        <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-9-9m0 0L5 14" /></svg>
       </div>
     </section>
   );

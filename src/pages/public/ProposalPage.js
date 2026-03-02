@@ -50,15 +50,18 @@ const ProposalPage = () => {
     fetchQuotation();
   }, [proposalId]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-zinc-50 text-2xl text-slate-400">Loading your premium proposal...</div>;
 
   if (error || !quotation) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50 p-6">
         <div className="text-center max-w-lg">
-          <h1 className="text-4xl font-bold text-red-600 mb-4">Quotation Not Found</h1>
-          <p className="text-xl text-gray-700 mb-8">{error}</p>
-          <a href="mailto:info@airutilities.co.uk" className="inline-block bg-blue-600 text-white px-8 py-4 rounded-xl">
+          <div className="mx-auto w-24 h-24 bg-red-100 rounded-2xl flex items-center justify-center mb-8">
+            <span className="text-6xl">⚠️</span>
+          </div>
+          <h1 className="text-5xl font-bold text-slate-900 mb-4">Quotation Not Found</h1>
+          <p className="text-xl text-slate-600 mb-10">{error}</p>
+          <a href="mailto:info@airutilities.co.uk" className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-600 hover:to-indigo-700 text-white px-10 py-5 rounded-2xl font-semibold text-lg shadow-xl transition-all hover:scale-105">
             Contact Support
           </a>
         </div>
@@ -67,10 +70,10 @@ const ProposalPage = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-gray-50">
+    <div className="relative min-h-screen bg-zinc-50 overflow-hidden">
       <button
         onClick={() => setSidebarOpen(true)}
-        className="fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg md:hidden"
+        className="fixed top-6 left-6 z-50 p-4 bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl md:hidden border border-slate-200"
       >
         ☰
       </button>
@@ -89,16 +92,13 @@ const ProposalPage = () => {
 
         <QuotationSummary quotation={quotation} />
 
-        {/* Dynamic sections – show if data exists and is not empty */}
+        {/* Dynamic sections */}
         {quotation.scopeTable && Object.values(quotation.scopeTable).some(v => v) && (
           <QuotationScopeTable data={quotation.scopeTable} />
         )}
 
         {quotation.tenderInclusions && Object.keys(quotation.tenderInclusions).length > 0 && (
-          <TenderInclusionSummary 
-            data={quotation.tenderInclusions} 
-            jobTypes={quotation.jobType || []} 
-          />
+          <TenderInclusionSummary data={quotation.tenderInclusions} jobTypes={quotation.jobType || []} />
         )}
 
         {quotation.airSourceHeatPumps && quotation.airSourceHeatPumps.numPlots && (
@@ -117,7 +117,6 @@ const ProposalPage = () => {
           <PocDocumentationPublic data={quotation.pocDocumentation} />
         )}
 
-        {/* Always show static sections */}
         <StaticConstructionAssumptions />
         <StaticResponsibilities />
         <StaticPaymentTerms />
@@ -126,12 +125,7 @@ const ProposalPage = () => {
       </main>
 
       <FooterPublic />
-
-      <AcceptanceModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        quotation={quotation}
-      />
+      <AcceptanceModal isOpen={showModal} onClose={() => setShowModal(false)} quotation={quotation} />
     </div>
   );
 };
