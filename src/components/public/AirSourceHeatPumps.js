@@ -5,39 +5,16 @@ const AirSourceHeatPumps = ({ data }) => {
   if (!data) return null;
 
   return (
-    <section id="heat-pumps" className="py-12 bg-white border-t">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-6 text-center">Air Source Heat Pumps</h2>
-        <p className="text-center text-gray-600 mb-8">
-          This tender does not include for the electric load provision to supply capacity for air source heat pumps.
-        </p>
-
-        <div className="bg-gray-50 p-8 rounded-xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-gray-700 font-medium">No. of plots with air source heat pump</label>
-              <p className="text-lg mt-1">{data.numPlots || '—'}</p>
-            </div>
-            <div>
-              <label className="block text-gray-700 font-medium">Plot numbers</label>
-              <p className="text-lg mt-1">{data.plotNumbers || '—'}</p>
-            </div>
-            <div>
-              <label className="block text-gray-700 font-medium">Data sheet provided</label>
-              <p className="text-lg mt-1">{data.dataSheet ? 'Yes' : 'No'}</p>
-            </div>
-            <div>
-              <label className="block text-gray-700 font-medium">Pump Model</label>
-              <p className="text-lg mt-1">{data.pumpModel || '—'}</p>
-            </div>
-            <div>
-              <label className="block text-gray-700 font-medium">ASHP load allowance per plot</label>
-              <p className="text-lg mt-1">{data.loadAllowance || '—'}</p>
-            </div>
-          </div>
-        </div>
+    <div className="bg-stone-50 p-10 rounded-2xl">
+      <p className="text-stone-600 mb-8 text-center">This tender does not include for the electric load provision to supply capacity for air source heat pumps.</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 text-sm">
+        <div><span className="font-medium text-stone-500">No. of plots with air source heat pump</span><p className="mt-1 text-lg">{data.numPlots || '—'}</p></div>
+        <div><span className="font-medium text-stone-500">Plot numbers</span><p className="mt-1 text-lg">{data.plotNumbers || '—'}</p></div>
+        <div><span className="font-medium text-stone-500">Data sheet provided</span><p className="mt-1 text-lg">{data.dataSheet ? 'Yes' : 'No'}</p></div>
+        <div><span className="font-medium text-stone-500">Pump Model</span><p className="mt-1 text-lg">{data.pumpModel || '—'}</p></div>
+        <div><span className="font-medium text-stone-500">ASHP load allowance per plot</span><p className="mt-1 text-lg">{data.loadAllowance || '—'}</p></div>
       </div>
-    </section>
+    </div>
   );
 };
 

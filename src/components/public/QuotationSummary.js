@@ -3,107 +3,121 @@ import React from 'react';
 
 const QuotationSummary = ({ quotation }) => {
   const {
-    projectTitle = "Project Title",
-    siteAddress = "Site Address",
-    customerName = "Customer Name",
-    jobType = [],  // array
-    subtotal = 0,
-    vatRate = 20,
-    vatAmount = 0,
-    totalAmount = 0,
-    validUntil = "N/A",
-    items = [],
+    projectTitle = 'Project Title',
+    siteAddress  = 'Site Address',
+    customerName = 'Customer Name',
+    jobType      = [],
+    subtotal     = 0,
+    vatRate      = 20,
+    vatAmount    = 0,
+    totalAmount  = 0,
+    validUntil   = 'N/A',
+    items        = [],
   } = quotation || {};
-  
+
+  const fmt = (n) => Number(n).toLocaleString('en-GB', { minimumFractionDigits: 2 });
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        {/* Section heading */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Your Quotation Summary
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Detailed breakdown for your project — clear, transparent, and ready to proceed.
-          </p>
-        </div>
+    <div style={{ fontFamily: "'Lato', sans-serif" }}>
 
-        {/* Main content card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-          {/* Header – updated with jobType and siteAddress */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-10 md:px-12 md:py-12">
-            <h3 className="text-2xl md:text-3xl font-bold mb-3">
-              {jobType.length > 0 ? jobType.join(' + ') : 'General'} Job – {projectTitle}
-            </h3>
-            <p className="text-lg md:text-xl opacity-90 mb-2">
-              Site Address: {siteAddress}
-            </p>
-            <p className="text-base md:text-lg opacity-90">
-              Prepared for: <span className="font-medium">{customerName}</span>
-            </p>
-          </div>
-
-          {/* Items table */}
-          <div className="px-6 md:px-10 pt-10 pb-8">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b-2 border-gray-200">
-                    <th className="py-4 px-4 text-lg font-semibold text-gray-800">Service</th>
-                    <th className="py-4 px-4 text-lg font-semibold text-gray-800 text-right">Amount (£)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item, index) => (
-                    <tr
-                      key={index}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="py-5 px-4 text-gray-800 text-base md:text-lg">
-                        {item.serviceName || item.name || 'Unnamed Service'}
-                      </td>
-                      <td className="py-5 px-4 text-right text-gray-900 font-medium text-base md:text-lg">
-                        {Number(item.totalPrice || item.price || 0).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pricing summary */}
-            <div className="mt-10 pt-8 border-t-2 border-gray-200">
-              <div className="flex justify-between items-center py-4 text-lg md:text-xl">
-                <span className="text-gray-700 font-medium">Subtotal</span>
-                <span className="text-gray-900 font-semibold">
-                  £{Number(subtotal).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center py-4 text-lg md:text-xl border-t border-gray-100">
-                <span className="text-gray-700 font-medium">VAT ({vatRate}%)</span>
-                <span className="text-gray-900 font-semibold">
-                  £{Number(vatAmount).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center py-6 text-2xl md:text-3xl font-bold mt-4 bg-gray-50 px-6 rounded-xl">
-                <span className="text-gray-900">Total</span>
-                <span className="text-blue-700">
-                  £{Number(totalAmount).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-
-              <p className="mt-8 text-center text-gray-600 text-base md:text-lg">
-                This quotation is valid until <strong>{validUntil}</strong>.
-                Prices exclude any third-party fees or unforeseen site conditions.
-              </p>
-            </div>
-          </div>
-        </div>
+      {/* Hero banner — warm orange gradient matching navigator */}
+      <div style={{
+        background: 'linear-gradient(135deg, #e8622a 0%, #c24e1e 100%)',
+        borderRadius: '14px',
+        padding: '28px 32px',
+        marginBottom: '28px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{ position:'absolute', right:'-30px', top:'-30px', width:'160px', height:'160px', borderRadius:'50%', background:'rgba(255,255,255,0.07)' }} />
+        <div style={{ position:'absolute', right:'80px', bottom:'-50px', width:'110px', height:'110px', borderRadius:'50%', background:'rgba(255,255,255,0.05)' }} />
+        <h3 style={{
+          color: '#fff', fontSize: 'clamp(18px,2.2vw,24px)', fontWeight: 800,
+          fontFamily: "'Bricolage Grotesque', sans-serif",
+          margin: '0 0 12px', lineHeight: 1.2, position: 'relative',
+        }}>
+          {jobType.length > 0 ? jobType.join(' + ') : 'General'} Job – {projectTitle}
+        </h3>
+        <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '14px', margin: '0 0 5px', position: 'relative' }}>
+          Site: {siteAddress}
+        </p>
+        <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '14px', margin: 0, position: 'relative' }}>
+          Prepared for: <strong style={{ color: '#fff', fontWeight: 700 }}>{customerName}</strong>
+        </p>
       </div>
-    </section>
+
+      {/* Items table */}
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid #ede8e0' }}>
+              <th style={{
+                padding: '12px 0', textAlign: 'left', fontSize: '12px', fontWeight: 700,
+                color: '#a09890', textTransform: 'uppercase', letterSpacing: '.08em',
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+              }}>Service</th>
+              <th style={{
+                padding: '12px 0', textAlign: 'right', fontSize: '12px', fontWeight: 700,
+                color: '#a09890', textTransform: 'uppercase', letterSpacing: '.08em',
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+              }}>Amount (£)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.length === 0 ? (
+              <tr>
+                <td colSpan={2} style={{ padding: '24px 0', color: '#a09890', fontSize: '14px', textAlign: 'center' }}>
+                  No items listed.
+                </td>
+              </tr>
+            ) : items.map((item, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid #f5f0ea' }}>
+                <td style={{ padding: '15px 0', fontSize: '15px', color: '#44403c' }}>
+                  {item.serviceName || item.name || 'Unnamed Service'}
+                </td>
+                <td style={{ padding: '15px 0', textAlign: 'right', fontSize: '15px', fontWeight: 600, color: '#1c1917' }}>
+                  £{fmt(item.totalPrice || item.price || 0)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Totals */}
+      <div style={{ marginTop: '24px', borderTop: '2px solid #ede8e0', paddingTop: '18px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '9px 0', fontSize: '15px', color: '#78716c' }}>
+          <span>Subtotal</span>
+          <span style={{ fontWeight: 600, color: '#1c1917' }}>£{fmt(subtotal)}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '9px 0', fontSize: '15px', color: '#78716c', borderTop: '1px solid #f5f0ea' }}>
+          <span>VAT ({vatRate}%)</span>
+          <span style={{ fontWeight: 600, color: '#1c1917' }}>£{fmt(vatAmount)}</span>
+        </div>
+
+        {/* Total highlight */}
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          background: 'linear-gradient(135deg, #fff3ee, #fff8f4)',
+          border: '1.5px solid #f9c4ad',
+          borderRadius: '12px', padding: '18px 22px', marginTop: '14px',
+        }}>
+          <span style={{ fontSize: '18px', fontWeight: 800, color: '#1c1917', fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+            Total Amount
+          </span>
+          <span style={{ fontSize: '26px', fontWeight: 800, color: '#e8622a', fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+            £{fmt(totalAmount)}
+          </span>
+        </div>
+
+        <p style={{
+          marginTop: '14px', textAlign: 'center', fontSize: '13px', color: '#a09890',
+          background: '#f5f2ee', borderRadius: '8px', padding: '9px 14px',
+        }}>
+          Valid until <strong style={{ color: '#78716c' }}>{validUntil}</strong>. Prices exclude third-party fees unless stated.
+        </p>
+      </div>
+    </div>
   );
 };
 

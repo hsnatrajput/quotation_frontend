@@ -18,33 +18,27 @@ const QuotationScopeTable = ({ data }) => {
   ];
 
   return (
-    <section id="scope" className="py-16 bg-white border-t border-b">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-4">SCOPE OF WORKS</h2>
-        <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
-          This quotation has been prepared using the following drawing: {data.drawing || "—"}
-        </p>
-
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden">
-            <thead>
-              <tr className="bg-blue-700 text-white">
-                <th className="p-5 text-left font-semibold">Description</th>
-                <th className="p-5 text-left font-semibold">Details</th>
+    <>
+      <p className="text-stone-600 mb-8">This quotation has been prepared using the following drawing: <strong>{data.drawing || "—"}</strong></p>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse bg-white shadow-sm rounded-2xl overflow-hidden">
+          <thead>
+            <tr className="bg-blue-700 text-white">
+              <th className="p-6 text-left">Description</th>
+              <th className="p-6 text-left">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i} className="border-b hover:bg-stone-50">
+                <td className="p-6 font-medium border-r border-stone-100">{row.desc}</td>
+                <td className="p-6 text-stone-700">{row.detail}</td>
               </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, index) => (
-                <tr key={index} className="border-b hover:bg-gray-50 transition">
-                  <td className="p-5 font-medium text-gray-800 border-r">{row.desc}</td>
-                  <td className="p-5 text-gray-700">{row.detail}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </section>
+    </>
   );
 };
 
