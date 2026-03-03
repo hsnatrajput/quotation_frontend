@@ -29,7 +29,7 @@ const CompanyIntro = () => {
         className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[20s]"
         style={{ backgroundImage: "url('/assets/background-intro.jpg')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-cyan-50/70 to-white/90" />
+      <div className="absolute inset-0  from-white/85 via-cyan-50/70 to-white/90" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-12 h-full flex items-center">
         <div className="max-w-3xl">
@@ -47,7 +47,7 @@ const CompanyIntro = () => {
       </div>
 
       {/* Light wave divider */}
-      <WaveDivider />
+      {/* <WaveDivider /> */}
     </section>
   );
 };

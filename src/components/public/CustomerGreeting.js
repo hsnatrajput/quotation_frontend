@@ -86,7 +86,7 @@ const CustomerGreeting = ({ customerName, siteAddress }) => {
       </div>
 
       {/* Light wave */}
-      <WaveDivider />
+      {/* <WaveDivider /> */}
     </section>
   );
 };

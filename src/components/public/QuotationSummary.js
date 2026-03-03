@@ -109,7 +109,7 @@ const QuotationSummary = ({ quotation }) => {
       </div>
 
       {/* Elegant light wave */}
-      <WaveDivider />
+      {/* <WaveDivider /> */}
     </section>
   );
 };

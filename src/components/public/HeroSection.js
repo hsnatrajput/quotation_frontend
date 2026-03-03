@@ -15,7 +15,7 @@ const WaveDivider = () => (
     />
     <path 
       d="M0 120L48 105C96 90 192 60 288 55C384 50 480 80 576 85C672 90 768 60 864 45C960 30 1056 40 1152 50C1248 60 1344 80 1392 85L1440 90V120H0Z" 
-      fill="#67E8F9" 
+      // fill="#67E8F9" 
       fillOpacity="0.22" 
     />
   </svg>
@@ -31,7 +31,7 @@ const HeroSection = () => {
       />
 
       {/* Very soft light overlay – premium airy feel */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/75 via-cyan-50/60 to-white/80" />
+      <div className="absolute inset-0 from-white/75 via-cyan-50/60 to-white/80" />
 
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 lg:px-12">
         <div className="max-w-5xl">
@@ -50,9 +50,9 @@ const HeroSection = () => {
       </div>
 
       {/* Elegant light wave divider */}
-      <div className="absolute bottom-0 left-0 w-full">
+      {/* <div className="absolute bottom-0 left-0 w-full">
         <WaveDivider />
-      </div>
+      </div> */}
 
       {/* Scroll prompt – light theme */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-slate-500 animate-bounce">
