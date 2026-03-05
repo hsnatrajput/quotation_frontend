@@ -10,11 +10,7 @@ import ScopeOfWorks from '../../components/admin/quotation/ScopeOfWorks';
 import TenderInclusionSummary from '../../components/admin/quotation/TenderInclusionSummary';
 import AirSourceHeatPumpsSection from '../../components/admin/quotation/AirSourceHeatPumpsSection';
 import NonContestableCharges from '../../components/admin/quotation/NonContestableCharges';
-// import DeliveryStandards from '../../components/admin/quotation/DeliveryStandards';
-// import ConstructionAssumptions from '../../components/admin/quotation/ConstructionAssumptions';
-// import Responsibilities from '../../components/admin/quotation/Responsibilities';
 import LegalDocumentation from '../../components/admin/quotation/LegalDocumentation';
-// import PaymentTermsSection from '../../components/admin/quotation/PaymentTermsSection';
 import PocDocumentation from '../../components/admin/quotation/PocDocumentation';
 
 const QuotationCreate = () => {
@@ -158,23 +154,6 @@ const QuotationCreate = () => {
       councilCharges: '',
     },
 
-    // deliveryStandards: {
-    //   serviceCallOff: '',
-    //   mainsCallOff: '',
-    //   mobilisationDesignApproval: '',
-    //   draftDuctLayouts: '',
-    // },
-
-    // constructionAssumptions: {
-    //   siteSpecific: '',
-    //   generalTerms: '',
-    // },
-
-    // responsibilities: {
-    //   customer: '',
-    //   au: '',
-    // },
-
     legalDocumentation: {
       customerContact: '',
       landownerDetails: '',
@@ -187,8 +166,6 @@ const QuotationCreate = () => {
       mainsElectricPocRef: '',
       mainsElectricPocExpiry: '',
     },
-
-    // paymentTerms: '50% on acceptance, 25% on commencement, 25% on completion',
   });
 
   const [loading, setLoading] = useState(false);
@@ -204,16 +181,57 @@ const QuotationCreate = () => {
     tender: false,
     heatPumps: false,
     nonContestable: false,
-    delivery: false,
     pocDocumentation: false,
-    assumptions: false,
-    responsibilities: false,
     legal: false,
-    payment: true,
   });
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handleInclusionChange = (group, key, status) => {
+    setFormData((prev) => {
+      const prevGroup = prev.tenderInclusions?.[group] || {};
+      const prevItem = prevGroup[key] || {};
+
+      return {
+        ...prev,
+        tenderInclusions: {
+          ...prev.tenderInclusions,
+          [group]: {
+            ...prevGroup,
+            [key]: {
+              ...prevItem,
+              included: status === 'included',
+              excluded: status === 'excluded',
+              na: status === 'na',
+              comment: prevItem.comment || '',
+            },
+          },
+        },
+      };
+    });
+  };
+
+  const handleCommentChange = (group, key, comment) => {
+    setFormData((prev) => {
+      const prevGroup = prev.tenderInclusions?.[group] || {};
+      const prevItem = prevGroup[key] || {};
+
+      return {
+        ...prev,
+        tenderInclusions: {
+          ...prev.tenderInclusions,
+          [group]: {
+            ...prevGroup,
+            [key]: {
+              ...prevItem,
+              comment,
+            },
+          },
+        },
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -231,6 +249,9 @@ const QuotationCreate = () => {
       const token = localStorage.getItem('adminToken');
       if (!token) throw new Error('No token found');
 
+      // Debug: log tenderInclusions before send
+      console.log('Sending tenderInclusions:', formData.tenderInclusions);
+
       const payload = {
         ...formData,
         items: formData.items.map((item) => ({
@@ -243,17 +264,20 @@ const QuotationCreate = () => {
         vatAmount: Number(formData.vatAmount),
         totalAmount: Number(formData.totalAmount),
         vatRate: Number(formData.vatRate),
+        tenderInclusions: formData.tenderInclusions || {},
       };
 
-      await axios.post('http://localhost:5000/api/quotations', payload, {
+      const response = await axios.post('http://localhost:5000/api/quotations', payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      console.log('Backend saved tenderInclusions:', response.data.data?.tenderInclusions);
 
       alert('New quotation created successfully!');
       navigate('/admin/quotations');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create quotation');
-      console.error(err);
+      console.error('Submit error:', err);
     } finally {
       setLoading(false);
     }
@@ -347,7 +371,11 @@ const QuotationCreate = () => {
               TENDER INCLUSION SUMMARY {openSections.tender ? '▲' : '▼'}
             </h2>
             {openSections.tender && (
-              <TenderInclusionSummary formData={formData} setFormData={setFormData} />
+              <TenderInclusionSummary
+                inclusions={formData.tenderInclusions}
+                onChange={handleInclusionChange}
+                onCommentChange={handleCommentChange}
+              />
             )}
           </div>
 
@@ -377,20 +405,7 @@ const QuotationCreate = () => {
             )}
           </div>
 
-          {/* 9. Delivery Standards */}
-          {/* <div className="border-b pb-8">
-            <h2
-              className="text-2xl font-bold mb-6 cursor-pointer flex justify-between items-center"
-              onClick={() => toggleSection('delivery')}
-            >
-              DELIVERY STANDARDS {openSections.delivery ? '▲' : '▼'}
-            </h2>
-            {openSections.delivery && (
-              <DeliveryStandards formData={formData} setFormData={setFormData} />
-            )}
-          </div> */}
-
-          {/* Point of Connection Documentation - NEW */}
+          {/* Point of Connection Documentation */}
           <div className="border-b pb-8">
             <h2
               className="text-2xl font-bold mb-6 cursor-pointer flex justify-between items-center"
@@ -403,33 +418,7 @@ const QuotationCreate = () => {
             )}
           </div>
 
-          {/* 10. Construction Assumptions */}
-          {/* <div className="border-b pb-8">
-            <h2
-              className="text-2xl font-bold mb-6 cursor-pointer flex justify-between items-center"
-              onClick={() => toggleSection('assumptions')}
-            >
-              CONSTRUCTION ASSUMPTIONS {openSections.assumptions ? '▲' : '▼'}
-            </h2>
-            {openSections.assumptions && (
-              <ConstructionAssumptions formData={formData} setFormData={setFormData} />
-            )}
-          </div> */}
-
-          {/* 11. Responsibilities */}
-          {/* <div className="border-b pb-8">
-            <h2
-              className="text-2xl font-bold mb-6 cursor-pointer flex justify-between items-center"
-              onClick={() => toggleSection('responsibilities')}
-            >
-              Responsibilities {openSections.responsibilities ? '▲' : '▼'}
-            </h2>
-            {openSections.responsibilities && (
-              <Responsibilities formData={formData} setFormData={setFormData} />
-            )}
-          </div> */}
-
-          {/* 12. Legal Documentation */}
+          {/* Legal Documentation */}
           <div className="border-b pb-8">
             <h2
               className="text-2xl font-bold mb-6 cursor-pointer flex justify-between items-center"
@@ -441,19 +430,6 @@ const QuotationCreate = () => {
               <LegalDocumentation formData={formData} setFormData={setFormData} />
             )}
           </div>
-
-          {/* 13. Payment Terms */}
-          {/* <div className="border-b pb-8">
-            <h2
-              className="text-2xl font-bold mb-6 cursor-pointer flex justify-between items-center"
-              onClick={() => toggleSection('payment')}
-            >
-              Payment Terms {openSections.payment ? '▲' : '▼'}
-            </h2>
-            {openSections.payment && (
-              <PaymentTermsSection formData={formData} setFormData={setFormData} />
-            )}
-          </div> */}
 
           {/* Submit Button */}
           <div className="flex justify-end gap-4 mt-12">

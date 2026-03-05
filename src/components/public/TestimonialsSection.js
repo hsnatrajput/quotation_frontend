@@ -1,71 +1,84 @@
+// src/components/public/TestimonialsSection.js
 import React, { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const testimonials = [
   {
     id: 1,
+    number: "01",
+    title: "Request For Information",
+    description: "Client provides project details and constraints.",
+    quote: "Smooth metering install, responsive support.",
     name: "Sarah Thompson",
     role: "Commercial Property Manager",
-    company: "Thompson Retail Group",
     image: "/assets/test1.jpg",
-    text: "Air Utilities transformed our energy setup across five sites. Smart metering installation was seamless, and the ongoing support is genuinely responsive. Bills are now predictable — a huge relief.",
   },
   {
     id: 2,
+    number: "02",
+    title: "Quotation",
+    description: "Full compliant quote, priced competitively.",
+    quote: "Reliable supply, no hidden charges.",
     name: "Mark Reynolds",
     role: "Facilities Director",
-    company: "Reynolds Manufacturing Ltd",
     image: "/assets/test2.jpg",
-    text: "We switched from our previous provider after constant issues. Air Utilities delivered exactly what they promised: reliable gas & electric supply, clear reporting, and no hidden charges. Professional from start to finish.",
   },
   {
     id: 3,
+    number: "03",
+    title: "Design Stage",
+    description: "Draft designs prepared for approval.",
+    quote: "Quick upgrade, bills reduced 18%.",
     name: "David & Lisa Patel",
     role: "Homeowners",
-    company: "N/A",
     image: "/assets/test3.jpg",
-    text: "The whole-house smart meter upgrade was quick and tidy. We now understand our usage properly and have already reduced our bills by 18%. The team even explained everything clearly — no jargon!",
   },
   {
     id: 4,
+    number: "04",
+    title: "Construction",
+    description: "Formal programme of works and mobilisation.",
+    quote: "Efficient delivery, on-time completion.",
     name: "James Carter",
     role: "Operations Manager",
-    company: "Carter Logistics",
     image: "/assets/test4.jpg",
-    text: "EV charging points + solar integration done on time and on budget. Their engineers were knowledgeable and courteous. Energy costs dropped significantly in the first quarter — highly recommended.",
   },
   {
     id: 5,
-    name: "Emma Wilson",
-    role: "Head of Sustainability",
-    company: "Wilson Hotels Group",
+    number: "05",
+    title: "Construction",
+    description: "Formal programme of works and mobilisation.",
+    quote: "Efficient delivery, on-time completion.",
+    name: "James Carter",
+    role: "Operations Manager",
     image: "/assets/test5.jpg",
-    text: "Air Utilities helped us achieve our net-zero targets with efficient water & energy monitoring. Reporting is excellent and their advice has saved us thousands annually. A real partner, not just a supplier.",
   },
   {
     id: 6,
-    name: "Robert Khan",
-    role: "Business Owner",
-    company: "Khan Convenience Stores",
+    number: "06",
+    title: "Construction",
+    description: "Formal programme of works and mobilisation.",
+    quote: "Efficient delivery, on-time completion.",
+    name: "James Carter",
+    role: "Operations Manager",
     image: "/assets/test6.jpg",
-    text: "After years of overpaying, we moved everything to Air Utilities. Installation was fast, communication clear, and savings appeared immediately. Best decision we made for the business.",
   },
   {
     id: 7,
-    name: "Laura Bennett",
-    role: "Property Developer",
-    company: "Bennett Developments",
+    number: "07",
+    title: "Construction",
+    description: "Formal programme of works and mobilisation.",
+    quote: "Efficient delivery, on-time completion.",
+    name: "James Carter",
+    role: "Operations Manager",
     image: "/assets/test7.jpg",
-    text: "Multiple new-build projects — all utilities coordinated perfectly. Smart meters pre-installed, handover smooth. Their team really understands developers’ timelines and needs.",
-  },
-  {
-    id: 8,
-    name: "Michael Green",
-    role: "Engineering Manager",
-    company: "Green Industrial Park",
-    image: "/assets/test8.jpg",
-    text: "Large-scale gas & electric upgrade across industrial units. Professional project management, minimal disruption, and post-install support is outstanding. Exactly the level of service we needed.",
   },
 ];
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
 
 const TestimonialsSection = () => {
   const scrollRef = useRef(null);
@@ -76,7 +89,7 @@ const TestimonialsSection = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
       setShowLeftArrow(scrollLeft > 0);
-      setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 10); // small buffer
+      setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 10);
     }
   };
 
@@ -84,110 +97,137 @@ const TestimonialsSection = () => {
     const ref = scrollRef.current;
     if (ref) {
       ref.addEventListener('scroll', checkScroll);
-      checkScroll(); // initial check
-      return () => ref.removeEventListener('scroll', checkScroll);
+      const timer = setTimeout(checkScroll, 300);
+      return () => {
+        ref.removeEventListener('scroll', checkScroll);
+        clearTimeout(timer);
+      };
     }
   }, []);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -340, behavior: 'smooth' });
+      scrollRef.current.scrollBy({ left: -360, behavior: 'smooth' });
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+      scrollRef.current.scrollBy({ left: 360, behavior: 'smooth' });
     }
   };
 
   return (
-    <section className="py-20 md:py-28 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-8 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Heading */}
-        <div className="text-center mb-16 md:mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5">
-            What Our Clients Say
+        <div className="mb-12 md:mb-16 pl-8 md:pl-12 lg:pl-16">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-gray-600">
+            What our client says
           </h2>
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-            Real experiences from businesses and homeowners who trust us with their utilities.
-          </p>
         </div>
 
-        {/* Horizontal scroll wrapper */}
+        {/* Carousel */}
         <div className="relative">
-          {/* Left arrow – shown only when can scroll left */}
-          {showLeftArrow && (
-            <button
-              onClick={scrollLeft}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg rounded-full p-4 z-10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="Scroll left"
-            >
-              <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-          )}
-
-          {/* Scrollable container */}
+          {/* Cards */}
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory scrollbar-hide scroll-smooth"
+            className="
+              flex overflow-x-auto gap-6 pb-0 snap-x snap-mandatory scrollbar-hide scroll-smooth
+              pl-16 sm:pl-32 md:pl-64 lg:pl-96 xl:pl-[12%] 2xl:pl-[15%]
+              pr-0
+            "
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {/* Hide scrollbar in WebKit */}
             <style jsx>{`
-              .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-              }
+              .scrollbar-hide::-webkit-scrollbar { display: none; }
             `}</style>
 
-            {testimonials.map((testimonial) => (
-              <div
-                key={testimonial.id}
-                className="flex-none w-[320px] sm:w-[360px] md:w-[400px] snap-start"
+            {testimonials.map((t) => (
+              <motion.div
+                key={t.id}
+                className="flex-none w-[280px] md:w-[340px] snap-start"
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                whileHover={{ y: -12, boxShadow: "0 20px 40px rgba(0,0,0,0.15)" }}
+                transition={{ duration: 0.4 }}
               >
-                <div className="bg-gray-50 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                  {/* Image */}
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                <div className="bg-gray-700 rounded-none overflow-hidden shadow-md h-full flex flex-col">
+                  <div className="relative p-6 pb-4">
+                    <span className="absolute top-4 right-6 text-5xl font-black"
+                     style={{ color: '#c9df8a' }}
+                    > 
+                      {t.number}
+                    </span>
 
-                  {/* Text content */}
-                  <div className="bg-white/95 backdrop-blur-xl border border-slate-100 rounded-3xl p-8 shadow-2xl hover:shadow-3xl hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
-                    <div className="text-6xl text-cyan-200/60 mb-6">“</div>
-                    <p className="text-slate-700 text-lg leading-relaxed flex-grow">“{testimonial.text}”</p>
-                    <div>
-                      <p className="font-semibold text-gray-900 text-lg">
-                        {testimonial.name}
-                      </p>
-                      <p className="text-gray-600 text-base">
-                        {testimonial.role}
-                        {testimonial.company !== "N/A" && `, ${testimonial.company}`}
+                    <div className="mt-12">
+                      <h3 className="text-xl md:text-2xl font-serif font-bold text-white">
+                        {t.title}
+                      </h3>
+                      <p className="mt-2 text-gray-200 text-sm md:text-base leading-tight">
+                        {t.description}
                       </p>
                     </div>
                   </div>
+
+                  <div className="px-6 pb-4 flex-grow">
+                    <p className="text-gray-200 text-sm md:text-base leading-relaxed italic">
+                      “{t.quote}”
+                    </p>
+                    <div className="mt-3">
+                      <p className="font-medium text-white text-sm">
+                        {t.name}
+                      </p>
+                      <p className="text-gray-400 text-xs">
+                        {t.role}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="h-40 overflow-hidden mt-auto">
+                    <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          {/* Right arrow – shown only when can scroll right */}
-          {showRightArrow && (
-            <button
-              onClick={scrollRight}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg rounded-full p-4 z-10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="Scroll right"
-            >
-              <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          )}
+          {/* Arrows BELOW the cards – centered, green theme */}
+          <div className="flex justify-center gap-8 mt-6">
+            {showLeftArrow && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.15 }}
+                transition={{ duration: 0.3 }}
+                onClick={scrollLeft}
+                className="bg-gray-600 hover:bg-gray-500 text-lime-400 rounded-full p-4 shadow-md focus:outline-none"
+                aria-label="Previous"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="#c9df8a" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </motion.button>
+            )}
+
+            {showRightArrow && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.15 }}
+                transition={{ duration: 0.3 }}
+                onClick={scrollRight}
+                className="bg-gray-600 hover:bg-gray-500 text-lime-400 rounded-full p-4 shadow-md focus:outline-none"
+                aria-label="Next"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="#c9df8a" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </motion.button>
+            )}
+          </div>
         </div>
       </div>
     </section>

@@ -1,92 +1,110 @@
 // src/components/public/CustomerGreeting.js
 import React from 'react';
+import { motion } from 'framer-motion';
 
-const WaveDivider = () => (
-  <svg 
-    className="w-full h-28 md:h-36 -mb-1" 
-    viewBox="0 0 1440 120" 
-    fill="currentColor" 
-    xmlns="http://www.w3.org/2000/svg" 
-    preserveAspectRatio="none"
-  >
-    <path 
-      d="M0 120L60 100C120 80 240 45 360 50C480 55 600 95 720 90C840 85 960 50 1080 40C1200 30 1320 55 1380 65L1440 80V120H0Z" 
-      fill="#f8fafc" 
-    />
-    <path 
-      d="M0 120L48 105C96 90 192 60 288 55C384 50 480 80 576 85C672 90 768 60 864 45C960 30 1056 40 1152 50C1248 60 1344 80 1392 85L1440 90V120H0Z" 
-      fill="#67E8F9" 
-      fillOpacity="0.22" 
-    />
-  </svg>
-);
+const greetingVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 1, ease: "easeOut", type: "spring", stiffness: 100 } 
+  }
+};
+
+const paragraphVariants = {
+  hidden: { opacity: 0, x: -80 },
+  visible: (i) => ({ 
+    opacity: 1, 
+    x: 0, 
+    transition: { 
+      delay: 0.4 + i * 0.3,  // stagger each paragraph
+      duration: 0.9, 
+      ease: "easeOut" 
+    } 
+  })
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, x: 100, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    x: 0, 
+    scale: 1, 
+    transition: { duration: 1.2, ease: "easeOut", delay: 0.5 } 
+  }
+};
 
 const CustomerGreeting = ({ customerName, siteAddress }) => {
   const name = customerName || 'Valued Customer';
   const address = siteAddress || 'your project location';
 
+  const paragraphs = [
+    `Thank you for choosing Air Utilities to power your project at ${address}.`,
+    "We truly appreciate the trust you have placed in us. Our team is committed to delivering reliable, high-quality utility solutions with complete transparency and professionalism.",
+    "Below is your detailed quotation summary. Every item is clearly listed with pricing and explanations so you can make a confident decision."
+  ];
+
   return (
-    <section className="relative bg-gradient-to-br from-zinc-50 via-white to-cyan-50/30 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
-        <div className="grid lg:grid-cols-12 gap-16 lg:gap-20 items-center">
+    <section className="relative bg-gray-700 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left - Text (now 5 columns for balance) */}
-          <div className="lg:col-span-5 space-y-8">
-            {/* <div className="inline-flex items-center gap-3 px-7 py-3 bg-white rounded-3xl shadow-sm border border-cyan-100">
-              <span className="text-cyan-500 text-2xl">✉️</span>
-              <span className="uppercase tracking-[2px] text-sm font-semibold text-slate-700">Your Personal Proposal</span>
-            </div> */}
+          {/* Left - Text (more space: 7 columns) */}
+          <motion.div 
+            className="lg:col-span-7 space-y-10"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.h3 
+              variants={greetingVariants}
+              className="text-5xl lg:text-6xl font-serif font-bold tracking-tight text-white leading-tight"
+            >
+              Dear <span style={{ color: '#c9df8a' }}>{name}</span>,
+            </motion.h3>
 
-            <h3 className="text-5xl lg:text-6xl font-black tracking-tighter text-slate-900 leading-none">
-              Dear <span className="bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">{name}</span>,
-            </h3>
-
-            <div className="text-2xl text-slate-700 leading-relaxed space-y-6 max-w-2xl">
-              <p>
-                Thank you for choosing <span className="font-semibold text-slate-900">Air Utilities</span> to power your project at{' '}
-                <span className="font-medium text-cyan-700">{address}</span>.
-              </p>
-              <p>
-                We truly appreciate the trust you have placed in us. Our team is committed to delivering reliable, high-quality utility solutions with complete transparency and professionalism.
-              </p>
-              <p>
-                Below is your detailed quotation summary. Every item is clearly listed with pricing and explanations so you can make a confident decision.
-              </p>
+            <div className="space-y-8 max-w-3xl">
+              {paragraphs.map((text, i) => (
+                <motion.p
+                  key={i}
+                  custom={i}
+                  variants={paragraphVariants}
+                  className="text-xl lg:text-2xl text-white leading-relaxed"
+                >
+                  {text}
+                </motion.p>
+              ))}
             </div>
 
-            <p className="text-xl text-slate-600 italic pt-4">
+            <motion.p 
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { delay: 1.5, duration: 0.8 } }
+              }}
+              className="text-xl lg:text-2xl text-gray-300 italic pt-6"
+            >
               We look forward to working with you.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
-          {/* Right - BIGGER & FULL image (7 columns + taller aspect) */}
-          <div className="lg:col-span-7 relative group">
-            <div className="aspect-[16/10] lg:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white ring-1 ring-cyan-100/70 bg-white">
+          {/* Right - Photo (5 columns) */}
+          <motion.div 
+            className="lg:col-span-5 relative"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={imageVariants}
+          >
+            <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-2xl border border-gray-700">
               <img
                 src="/assets/greeting.jpg"
                 alt="Air Utilities Project"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover"
               />
             </div>
-
-            {/* Luxury floating badge */}
-            <div className="absolute -bottom-6 -right-6 bg-white rounded-3xl shadow-2xl p-7 max-w-[260px] border border-cyan-100">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-cyan-400 to-indigo-500 rounded-2xl flex items-center justify-center text-white text-4xl shadow-inner">
-                  ⚡
-                </div>
-                <div>
-                  <p className="font-bold text-slate-900 text-lg">Ready to Connect</p>
-                  <p className="text-cyan-600 text-sm">Your project starts here</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-
-      {/* Light wave */}
-      {/* <WaveDivider /> */}
     </section>
   );
 };

@@ -2,7 +2,7 @@
 import React from 'react';
 
 const TenderInclusionSummary = ({ data, jobTypes = [] }) => {
-  if (!data || Object.keys(data).length === 0) return null;
+  if (!data) return null;
 
   const selectedActivities = [];
 
@@ -13,7 +13,6 @@ const TenderInclusionSummary = ({ data, jobTypes = [] }) => {
         if (value && typeof value === 'object') {
           const { included = false, excluded = false, na = false, comment = '' } = value;
 
-          // Only include if at least one option is selected
           if (included || excluded || na) {
             let statusLabel = '';
             let statusColor = '';
@@ -29,33 +28,37 @@ const TenderInclusionSummary = ({ data, jobTypes = [] }) => {
               statusColor = 'bg-gray-100 text-gray-800 border-gray-300';
             }
 
-            // Optional: filter by jobTypes (remove if you want everything shown)
-            const isRelevant = jobTypes.length === 0 ||
-              jobTypes.some(type => 
-                groupName.toLowerCase().includes(type.toLowerCase()) ||
-                activityKey.toLowerCase().includes(type.toLowerCase())
-              );
-
-            if (isRelevant) {
-              selectedActivities.push({
-                group: groupName,
-                key: activityKey,
-                label: activityKey
-                  .replace(/([A-Z])/g, ' $1') // camelCase → spaces
-                  .replace(/^./, str => str.toUpperCase())
-                  .trim(),
-                status: statusLabel,
-                statusColor,
-                comment: comment.trim() || '—',
-              });
-            }
+            // Removed isRelevant filter -- always include if selected
+            selectedActivities.push({
+              group: groupName,
+              key: activityKey,
+              label: activityKey
+                .replace(/([A-Z])/g, ' $1') // camelCase → spaces
+                .replace(/^./, str => str.toUpperCase())
+                .trim(),
+              status: statusLabel,
+              statusColor,
+              comment: comment.trim() || '—',
+            });
           }
         }
       });
     }
   });
 
-  if (selectedActivities.length === 0) return null;
+  // Fallback UI if no activities are selected
+  if (selectedActivities.length === 0) return (
+    <section id="tender-inclusions" className="py-16 bg-white border-t border-b">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          Tender Inclusion Summary
+        </h2>
+        <p className="text-xl text-gray-600">
+          No tender inclusions specified for this quotation.
+        </p>
+      </div>
+    </section>
+  );
 
   return (
     <section id="tender-inclusions" className="py-16 bg-white border-t border-b">

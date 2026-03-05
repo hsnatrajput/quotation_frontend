@@ -97,7 +97,8 @@ const ProposalPage = () => {
           <QuotationScopeTable data={quotation.scopeTable} />
         )}
 
-        {quotation.tenderInclusions && Object.keys(quotation.tenderInclusions).length > 0 && (
+        {/* Updated: show TenderInclusionSummary whenever tenderInclusions exists (even if partially filled) */}
+        {quotation.tenderInclusions && (
           <TenderInclusionSummary data={quotation.tenderInclusions} jobTypes={quotation.jobType || []} />
         )}
 

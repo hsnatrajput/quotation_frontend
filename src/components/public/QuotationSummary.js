@@ -1,32 +1,29 @@
 // src/components/public/QuotationSummary.js
 import React from 'react';
+import { motion } from 'framer-motion';
 
-const WaveDivider = () => (
-  <svg 
-    className="w-full h-28 md:h-36 -mb-1" 
-    viewBox="0 0 1440 120" 
-    fill="currentColor" 
-    xmlns="http://www.w3.org/2000/svg" 
-    preserveAspectRatio="none"
-  >
-    <path 
-      d="M0 120L60 100C120 80 240 45 360 50C480 55 600 95 720 90C840 85 960 50 1080 40C1200 30 1320 55 1380 65L1440 80V120H0Z" 
-      fill="#f8fafc" 
-    />
-    <path 
-      d="M0 120L48 105C96 90 192 60 288 55C384 50 480 80 576 85C672 90 768 60 864 45C960 30 1056 40 1152 50C1248 60 1344 80 1392 85L1440 90V120H0Z" 
-      fill="#67E8F9" 
-      fillOpacity="0.22" 
-    />
-  </svg>
-);
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 const QuotationSummary = ({ quotation }) => {
   const {
     projectTitle = "Project Title",
     siteAddress = "Site Address",
     customerName = "Customer Name",
-    jobType = [],  
+    jobType = [],
     subtotal = 0,
     vatRate = 20,
     vatAmount = 0,
@@ -34,82 +31,104 @@ const QuotationSummary = ({ quotation }) => {
     validUntil = "N/A",
     items = [],
   } = quotation || {};
-  
+
   return (
-    <section className="relative py-24 bg-gradient-to-br from-white via-zinc-50 to-cyan-50/30 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Section heading */}
-        <div className="text-center mb-16">
-          <p className="uppercase tracking-[4px] text-cyan-600 font-medium text-sm mb-3">CLEAR & TRANSPARENT</p>
-          <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-slate-900">Your Quotation</h2>
-          <p className="mt-4 text-2xl text-slate-600 max-w-lg mx-auto">
-            Everything you need to know — beautifully presented.
-          </p>
-        </div>
+    <section className="relative py-20 md:py-28 bg-white overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6 lg:px-12">
+        <motion.div
+          className="space-y-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          {/* Heading */}
+          <motion.div variants={itemVariants} className="text-center">
+            {/* <p className="uppercase tracking-widest text-[#c9df8a] font-medium text-sm mb-3">
+              Transparent & Professional
+            </p> */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-gray-900">
+              Your Quotation Summary
+            </h2>
+            <p className="mt-5 text-xl text-gray-600 max-w-2xl mx-auto">
+              Clear, concise, and ready for your review.
+            </p>
+          </motion.div>
 
-        {/* Main premium card */}
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
-          {/* Vibrant light-theme header */}
-          <div className="bg-gradient-to-r from-cyan-600 via-indigo-600 to-violet-600 text-white px-12 py-16">
-            <h3 className="text-4xl font-bold">
-              {jobType.length > 0 ? jobType.join(' + ') : 'Project'} — {projectTitle}
-            </h3>
-            <p className="mt-4 text-xl opacity-90">{siteAddress}</p>
-            <p className="text-lg opacity-80">Prepared for {customerName}</p>
-          </div>
-
-          {/* Table area */}
-          <div className="px-12 py-12">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b-2 border-slate-200">
-                  <th className="py-6 text-left text-xl font-semibold text-slate-700">Service</th>
-                  <th className="py-6 text-right text-xl font-semibold text-slate-700">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, i) => (
-                  <tr 
-                    key={i} 
-                    className="border-b hover:bg-cyan-50/70 transition-all duration-200 group"
-                  >
-                    <td className="py-7 text-lg text-slate-800">{item.serviceName || item.name}</td>
-                    <td className="py-7 text-right text-2xl font-semibold text-slate-900">
-                      £{Number(item.totalPrice || item.price).toLocaleString('en-GB')}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* Totals box – soft light gradient */}
-            <div className="mt-14 bg-gradient-to-br from-zinc-50 to-white border border-slate-100 rounded-3xl p-12 shadow-inner">
-              <div className="flex justify-between text-2xl py-4 text-slate-700">
-                <span>Subtotal</span>
-                <span className="font-medium">£{Number(subtotal).toLocaleString('en-GB')}</span>
-              </div>
-              <div className="flex justify-between text-2xl py-4 border-t border-slate-200 text-slate-700">
-                <span>VAT (20%)</span>
-                <span className="font-medium">£{Number(vatAmount).toLocaleString('en-GB')}</span>
-              </div>
-
-              <div className="mt-10 flex justify-between items-end border-t-4 border-cyan-400 pt-10">
-                <span className="text-4xl font-bold text-slate-900">Total Due</span>
-                <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-indigo-500">
-                  £{Number(totalAmount).toLocaleString('en-GB')}
-                </span>
-              </div>
+          {/* Main Content Card */}
+          <motion.div
+            variants={itemVariants}
+            className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
+          >
+            {/* Header */}
+            <div className="bg-gray-600 text-white px-8 py-12 md:px-12 md:py-16">
+              <h3 className="text-3xl md:text-4xl font-serif font-bold">
+                {jobType.length > 0 ? jobType.join(' + ') : 'Project'} — {projectTitle}
+              </h3>
+              <p className="mt-3 text-lg opacity-90">{siteAddress}</p>
+              <p className="text-base opacity-80 mt-1">Prepared for {customerName}</p>
             </div>
 
-            <p className="text-center mt-12 text-slate-500 text-lg">
-              This quotation is valid until <strong className="text-slate-700 font-medium">{validUntil}</strong>
-            </p>
-          </div>
-        </div>
-      </div>
+            {/* Table */}
+            <div className="p-8 md:p-12">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b-2 border-gray-200">
+                    <th className="py-5 text-left text-lg font-semibold text-gray-800">Service / Description</th>
+                    <th className="py-5 text-right text-lg font-semibold text-gray-800">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item, i) => (
+                    <motion.tr
+                      key={i}
+                      variants={itemVariants}
+                      className="border-b hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <td className="py-6 text-base md:text-lg text-gray-800">
+                        {item.serviceName || item.name}
+                      </td>
+                      <td className="py-6 text-right text-lg md:text-xl font-semibold text-gray-600">
+                        £{Number(item.totalPrice || item.price).toLocaleString('en-GB')}
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
 
-      {/* Elegant light wave */}
-      {/* <WaveDivider /> */}
+              {/* Totals */}
+              <motion.div
+                variants={itemVariants}
+                className="mt-12 bg-gray-50 border border-gray-200 rounded-xl p-8 md:p-10"
+              >
+                <div className="flex justify-between text-lg text-gray-700 py-3">
+                  <span>Subtotal</span>
+                  <span className="font-medium">£{Number(subtotal).toLocaleString('en-GB')}</span>
+                </div>
+                <div className="flex justify-between text-lg text-gray-700 py-3 border-t border-gray-200">
+                  <span>VAT ({vatRate}%)</span>
+                  <span className="font-medium">£{Number(vatAmount).toLocaleString('en-GB')}</span>
+                </div>
+
+                <div className="mt-8 flex justify-between items-end border-t-4 border-[#c9df8a] pt-8">
+                  <span className="text-3xl md:text-4xl font-bold text-gray-900">Total Due</span>
+                  <span className="text-5xl md:text-6xl font-black text-[#c9df8a]">
+                    £{Number(totalAmount).toLocaleString('en-GB')}
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Validity */}
+              {/* <motion.p
+                variants={itemVariants}
+                className="text-center mt-10 text-gray-600 text-lg"
+              >
+                This quotation is valid until <strong className="text-gray-900 font-medium">{validUntil}</strong>
+              </motion.p> */}
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 };
