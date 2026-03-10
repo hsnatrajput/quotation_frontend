@@ -11,19 +11,11 @@ const ctaVariants = {
   }
 };
 
-const CallToAction = () => {
+const CallToAction = ({ onAccept }) => {
   const [agreed, setAgreed] = useState(false);
 
-  const handleAccept = () => {
-    if (!agreed) {
-      alert('Please agree to the terms before accepting.');
-      return;
-    }
-    alert('Thank you! Your proposal has been accepted. We will contact you shortly.');
-  };
-
   return (
-    <section className="relative py-20 md:py-28 bg-[#fdfaf5] overflow-hidden"> {/* cream bg */}
+    <section className="relative py-20 md:py-28 bg-[#fdfaf5] overflow-hidden">
       <div className="max-w-5xl mx-auto px-6 lg:px-12">
         <motion.div
           className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
@@ -33,17 +25,14 @@ const CallToAction = () => {
           variants={ctaVariants}
         >
           <div className="p-10 md:p-14 lg:p-16 text-center">
-            {/* Heading – light chocolate color */}
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-[#5c4033] mb-8">
               Ready to Move Forward?
             </h2>
 
-            {/* Supporting text */}
             <p className="text-xl md:text-2xl text-gray-800 leading-relaxed mb-12 max-w-3xl mx-auto">
               Accept this quotation today and let our team start delivering reliable, hassle-free utility solutions for your project.
             </p>
 
-            {/* Checkbox + legal note */}
             <div className="flex items-start justify-center gap-4 mb-12 max-w-xl mx-auto">
               <input
                 type="checkbox"
@@ -64,11 +53,9 @@ const CallToAction = () => {
               </label>
             </div>
 
-            {/* Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-10">
-              {/* Accept button – green accent */}
               <button
-                onClick={handleAccept}
+                onClick={onAccept}
                 disabled={!agreed}
                 className={`px-12 py-5 text-xl md:text-2xl font-bold rounded-xl transition-all duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-[#c9df8a]/30 ${
                   agreed
@@ -79,7 +66,6 @@ const CallToAction = () => {
                 Accept This Proposal
               </button>
 
-              {/* Secondary – Ask a Question */}
               <a
                 href="mailto:info@airutilities.co.uk?subject=Question%20about%20Quotation"
                 className="px-12 py-5 text-xl md:text-2xl font-medium rounded-xl border-2 border-[#c9df8a] text-[#c9df8a] hover:bg-[#c9df8a]/10 transition-all duration-300"
@@ -88,7 +74,6 @@ const CallToAction = () => {
               </a>
             </div>
 
-            {/* Trust signals */}
             <div className="text-base text-gray-600">
               <p>
                 Questions? Call us directly on <strong className="text-gray-900">0330 058 0252</strong> or email{' '}

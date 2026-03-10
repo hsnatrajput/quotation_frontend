@@ -362,7 +362,7 @@ const QuotationCreate = () => {
             )}
           </div>
 
-          {/* 6. Tender Inclusion Summary */}
+          {/* 6. Tender Inclusion Summary - FIXED */}
           <div className="border-b pb-8">
             <h2
               className="text-2xl font-bold mb-6 cursor-pointer flex justify-between items-center"

@@ -8,49 +8,7 @@ import GasSection from '../quotation/tender/GasSection';
 import GeneralSection from '../quotation/tender/GeneralSection';
 import MiscellaneousSection from '../quotation/tender/MiscellaneousSection';
 
-const TenderInclusionSummary = ({ formData, setFormData }) => {
-  const handleInclusionChange = (group, key, status) => {
-    setFormData((prev) => {
-      const current = prev.tenderInclusions?.[group]?.[key] || {};
-
-      return {
-        ...prev,
-        tenderInclusions: {
-          ...prev.tenderInclusions,
-          [group]: {
-            ...prev.tenderInclusions[group],
-            [key]: {
-              included: status === 'included',
-              excluded: status === 'excluded',
-              na: status === 'na',
-              comment: current.comment || '',
-            },
-          },
-        },
-      };
-    });
-  };
-
-  const handleCommentChange = (group, key, comment) => {
-    setFormData((prev) => ({
-      ...prev,
-      tenderInclusions: {
-        ...prev.tenderInclusions,
-        [group]: {
-          ...prev.tenderInclusions[group],
-          [key]: {
-            ...(prev.tenderInclusions[group]?.[key] || {
-              included: false,
-              excluded: false,
-              na: false,
-            }),
-            comment,
-          },
-        },
-      },
-    }));
-  };
-
+const TenderInclusionSummary = ({ inclusions, onChange, onCommentChange }) => {
   return (
     <div className="border-b pb-12">
       <h2 className="text-3xl font-bold text-center mb-10 text-blue-900">
@@ -59,45 +17,45 @@ const TenderInclusionSummary = ({ formData, setFormData }) => {
 
       <div className="space-y-16 px-4">
         <OffsiteWorks
-          inclusions={formData.tenderInclusions}
-          onChange={handleInclusionChange}
-          onCommentChange={handleCommentChange}
+          inclusions={inclusions}
+          onChange={onChange}
+          onCommentChange={onCommentChange}
         />
 
         <OnsiteUnmadeGround
-          inclusions={formData.tenderInclusions}
-          onChange={handleInclusionChange}
-          onCommentChange={handleCommentChange}
+          inclusions={inclusions}
+          onChange={onChange}
+          onCommentChange={onCommentChange}
         />
 
         <WaterSection
-          inclusions={formData.tenderInclusions}
-          onChange={handleInclusionChange}
-          onCommentChange={handleCommentChange}
+          inclusions={inclusions}
+          onChange={onChange}
+          onCommentChange={onCommentChange}
         />
 
         <ElectricSection
-          inclusions={formData.tenderInclusions}
-          onChange={handleInclusionChange}
-          onCommentChange={handleCommentChange}
+          inclusions={inclusions}
+          onChange={onChange}
+          onCommentChange={onCommentChange}
         />
 
         <GasSection
-          inclusions={formData.tenderInclusions}
-          onChange={handleInclusionChange}
-          onCommentChange={handleCommentChange}
+          inclusions={inclusions}
+          onChange={onChange}
+          onCommentChange={onCommentChange}
         />
 
         <GeneralSection
-          inclusions={formData.tenderInclusions}
-          onChange={handleInclusionChange}
-          onCommentChange={handleCommentChange}
+          inclusions={inclusions}
+          onChange={onChange}
+          onCommentChange={onCommentChange}
         />
 
         <MiscellaneousSection
-          inclusions={formData.tenderInclusions}
-          onChange={handleInclusionChange}
-          onCommentChange={handleCommentChange}
+          inclusions={inclusions}
+          onChange={onChange}
+          onCommentChange={onCommentChange}
         />
       </div>
 

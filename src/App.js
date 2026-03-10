@@ -4,6 +4,7 @@ import AdminLogin from './pages/admin/Login';
 import QuotationsList from './pages/admin/QuotationsList';
 import QuotationEdit from './pages/admin/QuotationEdit';
 import QuotationCreate from './pages/admin/QuotationCreate';  // ← NEW
+import Acceptances from './pages/admin/Acceptances';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -47,6 +48,12 @@ function App() {
               <ProtectedRoute>
                 <QuotationCreate />
               </ProtectedRoute>
+            }
+          />
+
+          <Route 
+            path="/admin/acceptances" 
+            element={<Acceptances />
             }
           />
 
