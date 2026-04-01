@@ -53,7 +53,7 @@ const TenderInclusionSummary = ({ data }) => {
   }
 
   return (
-    <section className="py-20 md:py-28 bg-white border-t border-b">
+    <section className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-[#5c4033] text-center mb-16">
           Tender Inclusion Summary

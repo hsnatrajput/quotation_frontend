@@ -5,6 +5,7 @@ import QuotationsList from './pages/admin/QuotationsList';
 import QuotationEdit from './pages/admin/QuotationEdit';
 import QuotationCreate from './pages/admin/QuotationCreate';  // ← NEW
 import Acceptances from './pages/admin/Acceptances';
+import ProposalPrint from './pages/public/ProposalPrint';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           {/* Public */}
           <Route path="/proposal/:proposalId" element={<ProposalPage />} />
+          <Route path="/print/:proposalId" element={<ProposalPrint />} />
 
           {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />

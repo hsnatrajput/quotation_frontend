@@ -17,7 +17,7 @@ const paragraphVariants = {
     opacity: 1, 
     x: 0, 
     transition: { 
-      delay: 0.4 + i * 0.3,  // stagger each paragraph
+      delay: 0.4 + i * 0.3,
       duration: 0.9, 
       ease: "easeOut" 
     } 
@@ -45,11 +45,14 @@ const CustomerGreeting = ({ customerName, siteAddress }) => {
   ];
 
   return (
-    <section className="relative bg-gray-700 overflow-hidden">
+    <section 
+      className="relative bg-gray-700 overflow-hidden"
+      data-theme="dark"           // ← IMPORTANT: tells the nav bar this is a dark section
+    >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-24">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left - Text (more space: 7 columns) */}
+          {/* Left - Text */}
           <motion.div 
             className="lg:col-span-7 space-y-10"
             initial="hidden"
@@ -87,7 +90,7 @@ const CustomerGreeting = ({ customerName, siteAddress }) => {
             </motion.p>
           </motion.div>
 
-          {/* Right - Photo (5 columns) */}
+          {/* Right - Photo */}
           <motion.div 
             className="lg:col-span-5 relative"
             initial="hidden"
